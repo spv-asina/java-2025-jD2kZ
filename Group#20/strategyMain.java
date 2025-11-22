@@ -22,7 +22,7 @@ class PaymentProcessor<T> {
     }
 }
 
-public class аа {
+public class strategyMain {
     public static void main(String[] args) {
         WalletStrategy<Integer> wallet = new WalletStrategy<>();
         CardStrategy<String> card = new CardStrategy<>();
@@ -35,4 +35,5 @@ public class аа {
         processor.strategy.pay("Приколов");
 
     }
+
 }
