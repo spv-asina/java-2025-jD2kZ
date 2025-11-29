@@ -1,0 +1,21 @@
+--------------------------------------------------------------------------
+# 1) компиляция Java + генерация JNI-заголовка
+javac -h native/include -d out \
+    src/java/nativelib/AwesomeLib.java \
+    src/java/nativelib/Main.java
+
+# 2) компиляция C++ в объектный файл (позиционно-независимый код)
+g++ -fPIC \
+    -I"$JAVA_HOME/include" \
+    -I"$JAVA_HOME/include/linux" \
+    -Inative/include \
+    -c native/src/nativelib_AwesomeLib.cpp \
+    -o native/obj/AwesomeLib.o
+
+# 3) линковка в shared library
+g++ -shared -o lib/libnativeLib.so native/obj/AwesomeLib.o
+
+# 4) запуск Java-программы (убирает warning про native-access)
+java --enable-native-access=ALL-UNNAMED -Djava.library.path=lib -cp out nativelib.Main
+
+--------------------------------------------------------------------------
